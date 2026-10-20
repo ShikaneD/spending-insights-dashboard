@@ -12,6 +12,7 @@ Set `VITE_ENABLE_MOCKS=false` to skip the mocks and call a real API at the same 
 docker build -t spending-insights-dashboard .
 docker run --rm -p 8080:8080 spending-insights-dashboard
 ```
+Verified: the Docker image builds and serves the app on port 8080 (checked in a GitHub Codespace).
 
 **Local** (Node 20+):
 
