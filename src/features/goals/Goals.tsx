@@ -1,4 +1,4 @@
-import { useGoals } from '../../api/queries';
+import { useFilterOptions, useGoals } from '../../api/queries';
 import { CategoryIcon } from '../../components/CategoryIcon';
 import { Section } from '../../components/Section';
 import { formatZar } from '../../lib/format';
@@ -6,6 +6,10 @@ import { statusMeta } from '../../lib/maps';
 
 export function Goals() {
   const query = useGoals();
+  const options = useFilterOptions();
+  // Goals carry no icon, so look it up by category name from the filters endpoint.
+  const categoryMeta = (name: string) => options.data?.categories.find((c) => c.name === name);
+
   return (
     <Section
       id="goals"
@@ -17,10 +21,11 @@ export function Goals() {
         <ul className="list">
           {goals.map((g) => {
             const status = statusMeta(g.status);
+            const meta = categoryMeta(g.category);
             return (
               <li key={g.id}>
                 <div className="row">
-                  <CategoryIcon name="" color="currentColor" />
+                  <CategoryIcon name={meta?.icon ?? ''} color={meta?.color ?? 'currentColor'} />
                   <strong className="grow">{g.category}</strong>
                   <span className={`badge ${status.tone}`}>{status.label}</span>
                 </div>

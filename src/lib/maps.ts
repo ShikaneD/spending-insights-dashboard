@@ -1,5 +1,5 @@
 import {
-  Car, CircleDollarSign, Film, ShoppingBag, ShoppingCart, Utensils, Zap, type LucideIcon,
+  Car, Tag, Film, ShoppingBag, ShoppingCart, Utensils, Zap, type LucideIcon,
 } from 'lucide-react';
 
 const ICONS: Record<string, LucideIcon> = {
@@ -12,7 +12,7 @@ const ICONS: Record<string, LucideIcon> = {
 };
 
 /** Unknown icon names from the API fall back to a generic icon. */
-export const getIcon = (name: string): LucideIcon => ICONS[name] ?? CircleDollarSign;
+export const getIcon = (name: string): LucideIcon => ICONS[name] ?? Tag;
 
 export type Tone = 'ok' | 'warn' | 'bad' | 'neutral';
 
