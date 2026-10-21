@@ -6,12 +6,22 @@ Set `VITE_ENABLE_MOCKS=false` to skip the mocks and call a real API at the same 
 
 ## Run
 
+**Prerequisites:** Git, plus Docker (for the container) or Node 20+ (for local development).
+
+```bash
+git clone https://github.com/ShikaneD/spending-insights-dashboard.git
+cd spending-insights-dashboard
+```
+
 **Docker** (serves on http://localhost:8080):
 
 ```bash
 docker build -t spending-insights-dashboard .
 docker run --rm -p 8080:8080 spending-insights-dashboard
 ```
+
+Health check: http://localhost:8080/healthz returns `ok`. Stop the container with `Ctrl+C`.
+
 Verified: the Docker image builds and serves the app on port 8080 (checked in a GitHub Codespace).
 
 **Local** (Node 20+):
@@ -20,6 +30,8 @@ Verified: the Docker image builds and serves the app on port 8080 (checked in a 
 npm install      # also generates public/mockServiceWorker.js
 npm run dev      # http://localhost:5173
 ```
+
+Stop the dev server with `Ctrl+C`. To serve the production build locally, run `npm run build && npm run preview` (http://localhost:4173).
 
 ## Test and check
 
@@ -75,7 +87,7 @@ src/
 | Summary endpoint documents only `period` | Mock also accepts `startDate`/`endDate` so the overview matches a custom range |
 | Transactions endpoint has no `period` | Presets do not filter the table; a custom range does |
 | Goal `status` shows only `on_track` and `warning` | Unknown values get a neutral label instead of crashing |
-| Goals have no `icon` field | A generic icon is shown |
+| Goals have no `icon` field | The icon and colour are looked up by category name from the filters endpoint |
 | Money is sent as JSON floats | Format only; recommend integer minor units or strings in a real API |
 | Sample dates are in 2024 | The mock treats 2024-09-16 as "today" so the presets return data |
 | Trends sample covers 6 months, but `months` allows up to 24 | The mock returns the six sample months, whatever `months` asks for |
@@ -84,7 +96,7 @@ src/
 ## Not done / next steps
 
 - Filters in URL search params (shareable, survive refresh) and a month selector for the trend.
-- Per-category icons on goals, and values on the trend bars.
+- Values on the trend bars, and merchant-specific descriptions for the generated transactions.
 - Error boundary per section (query errors are already isolated per section; render errors fall back to the app-level boundary).
 - Prettier config, Playwright smoke test, and a real backend (the API contract is unchanged, so this is a swap).
 - `npm audit --omit=dev` reports 0 vulnerabilities. The remaining advisories are in dev tooling (Vite, Vitest); I would upgrade these to the latest majors.
